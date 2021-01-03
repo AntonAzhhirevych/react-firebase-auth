@@ -10,4 +10,6 @@ const app = firebase.initializeApp({
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 });
 
+export const provider = new firebase.auth.FacebookAuthProvider();
+
 export default app;

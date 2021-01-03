@@ -1,9 +1,14 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { withRouter, Redirect } from 'react-router';
 import app from './base';
 import { AuthContext } from './Auth';
+import { provider } from './base';
+
+import FacebookSignIn from './FacebookSignIn';
 
 const Login = ({ history }) => {
+  const [user, changeUser] = useState(null);
+
   const handleLogin = useCallback(
     async (e) => {
       e.preventDefault();
@@ -18,6 +23,15 @@ const Login = ({ history }) => {
     },
     [history],
   );
+
+  const handleLoginWithFacebook = () => {
+    app
+      .auth()
+      .signInWithPopup(provider)
+      .then(({ user }) => {
+        changeUser(user);
+      });
+  };
 
   const { currentUser } = useContext(AuthContext);
 
@@ -39,6 +53,7 @@ const Login = ({ history }) => {
         </label>
         <button type="submit">Log in</button>
       </form>
+      <button onClick={handleLoginWithFacebook}>Login with Facebook</button>
     </div>
   );
 };
